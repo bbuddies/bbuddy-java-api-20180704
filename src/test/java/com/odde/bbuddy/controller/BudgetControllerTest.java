@@ -2,6 +2,7 @@ package com.odde.bbuddy.controller;
 
 import com.odde.bbuddy.domain.Accounts;
 import com.odde.bbuddy.domain.Budgets;
+import com.odde.bbuddy.repository.Account;
 import com.odde.bbuddy.repository.Budget;
 import org.junit.jupiter.api.Test;
 
@@ -30,5 +31,14 @@ public class BudgetControllerTest {
         List<Budget> budgetList = controller.index();
 
         assertThat(budgetList).isEqualTo(existingBudgetList);
+    }
+
+    @Test
+    void add_budget() {
+        Budget budget = new Budget("08/2017", 10000);
+
+        controller.add(budget);
+
+        verify(budgets).add(budget);
     }
 }

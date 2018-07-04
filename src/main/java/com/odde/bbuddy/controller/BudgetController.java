@@ -5,10 +5,9 @@ import com.odde.bbuddy.domain.Budgets;
 import com.odde.bbuddy.repository.Account;
 import com.odde.bbuddy.repository.Budget;
 import com.odde.bbuddy.repository.BudgetRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,5 +22,10 @@ public class BudgetController {
     @GetMapping
     public List<Budget> index(){
         return budgets.all();
+    }
+
+    @PostMapping
+    public Budget add(@Valid @RequestBody Budget budget){
+        return budgets.add(budget);
     }
 }
