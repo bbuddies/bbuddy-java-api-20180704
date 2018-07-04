@@ -11,7 +11,10 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Data
 public class Budget {
-
+    public Budget(String month, Integer amount) {
+        this.month = month;
+        this.amount = amount;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
