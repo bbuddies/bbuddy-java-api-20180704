@@ -19,13 +19,13 @@ public class BudgetRepositoryTest {
         // arrange
         Budget budget = new Budget("2018-07", 20d);
         budgetRepository.save(budget);
-        budgetRepository.findById("2018-07").ifPresent(result -> assertThat(result).isEqualTo(budget));
+        assertThat(budgetRepository.findById("2018-07")).isPresent().hasValue(budget);
 
         // act
         Budget updateBudget = new Budget("2018-07", 30d);
         budgetRepository.save(updateBudget);
 
         // assert
-        budgetRepository.findById("2018-07").ifPresent(result -> assertThat(result).isEqualTo(updateBudget));
+        assertThat(budgetRepository.findById("2018-07")).isPresent().hasValue(updateBudget);
     }
 }
