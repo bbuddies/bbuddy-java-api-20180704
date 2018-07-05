@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,17 +61,28 @@ public class BudgetsTest {
     @Parameters(
             {
                     "2018-07-01, 2018-07-31, 310",
-                    "2018-07-10, 2018-07-31, 220",
+                    "2018-07-02, 2018-07-31, 300",
+                    "2018-07-01, 2018-07-30, 300",
+
                     "2018-06-01, 2018-07-31, 610",
-                    "2018-06-01, 2018-07-30, 600",
-                    "2018-06-02, 2018-07-30, 590",
+                    "2018-06-01, 2018-08-31, 920",
+                    "2018-06-02, 2018-08-31, 910",
+                    "2018-06-01, 2018-08-30, 910",
                     "2018-01-01, 2018-10-31, 920",
+
+                    "2018-05-01, 2018-06-01, 10",
+                    "2018-08-31, 2018-09-01, 10",
+
+                    "2018-01-01, 2018-05-01, 0",
+                    "2018-09-01, 2018-10-01, 0",
             })
     public void search_total_amount(String startSearch, String endSearch, Double expectedAmount) {
         List<Budget> budgetList = new ArrayList<>();
+        budgetList.add(new Budget(LocalDate.of(2017, 6, 1), 300d));
         budgetList.add(new Budget(LocalDate.of(2018, 6, 1), 300d));
         budgetList.add(new Budget(LocalDate.of(2018, 7, 1), 310d));
         budgetList.add(new Budget(LocalDate.of(2018, 8, 1), 310d));
+        budgetList.add(new Budget(LocalDate.of(2019, 6, 1), 300d));
 
         when(budgetRepository.findAll()).thenReturn(budgetList);
 
@@ -119,4 +131,6 @@ public class BudgetsTest {
 
         assertThat(resultAmount).isEqualTo(expectedAmount);
     }
+
+
 }
