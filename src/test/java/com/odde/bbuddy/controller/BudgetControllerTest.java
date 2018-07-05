@@ -4,6 +4,7 @@ import com.odde.bbuddy.domain.Budgets;
 import com.odde.bbuddy.repository.Budget;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class BudgetControllerTest {
 
     @Test
     void fetch_all_budgets() {
-        givenBudgets(new Budget("2018-07", 200d));
+        givenBudgets(new Budget(LocalDate.of(2018, 7, 1), 200d));
 
         List<Budget> budgetList = controller.index();
 
@@ -31,7 +32,7 @@ public class BudgetControllerTest {
 
     @Test
     void add_budget() {
-        Budget budget = new Budget("2018-07", 200d);
+        Budget budget = new Budget(LocalDate.of(2018, 7, 1), 200d);
 
         controller.add(budget);
 

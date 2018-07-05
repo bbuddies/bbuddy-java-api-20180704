@@ -7,6 +7,7 @@ import lombok.NonNull;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -14,7 +15,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class Budget {
     @Id
-    private String month;
+    private LocalDate month;
 
     @NonNull
     private Double amount;

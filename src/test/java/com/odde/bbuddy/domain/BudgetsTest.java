@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class BudgetsTest {
 
     @Test
     public void add_budget() {
-        Budget budget = new Budget("2018-07", 200d);
+        Budget budget = new Budget(LocalDate.of(2018, 7, 1), 200d);
 
         budgets.add(budget);
 
@@ -39,7 +40,7 @@ public class BudgetsTest {
 
     @Test
     public void get_all_budgets() {
-        givenBudgets(new Budget("2018-07", 200d));
+        givenBudgets(new Budget(LocalDate.of(2018, 7, 1), 200d));
 
         List<Budget> budgetList = budgets.all();
 
