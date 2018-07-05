@@ -1,6 +1,7 @@
 package com.odde.bbuddy.homework;
 
 import com.odde.bbuddy.repository.Budget;
+import org.jetbrains.annotations.NotNull;
 import sun.util.resources.LocaleData;
 
 import java.text.DateFormat;
@@ -27,13 +28,10 @@ public class Budgets {
         Date startDate = converToDate(start);
         Date endDate = converToDate(end);
         int total = 0;
-        Calendar cEnd = Calendar.getInstance();
-        cEnd.setTime(endDate);
-        cEnd.add(Calendar.DATE, 1);
-        endDate = cEnd.getTime();
+        Calendar cEnd = getCalendar(endDate);
+        endDate = addDate(cEnd);
         while (!startDate.equals(endDate)){
-            Calendar c = Calendar.getInstance();
-            c.setTime(startDate);
+            Calendar c = getCalendar(startDate);
             String m = c.get(Calendar.YEAR) + "-" + padding(c.get(Calendar.MONTH));
             Budget b = new Budget(m,0);
             //System.out.println(startDate);
@@ -41,11 +39,25 @@ public class Budgets {
                 if(budget.equals(b)) total += budget.perdate;
                 //System.out.println("total="+total);
             }
-            c.add(Calendar.DATE, 1);
-            startDate = c.getTime();
+            startDate = addDate(c);
         }
 
         return total;
+    }
+
+    @NotNull
+    private Date addDate(Calendar cEnd) {
+        Date endDate;
+        cEnd.add(Calendar.DATE, 1);
+        endDate = cEnd.getTime();
+        return endDate;
+    }
+
+    @NotNull
+    private Calendar getCalendar(Date startDate) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(startDate);
+        return c;
     }
 
     private String padding(int i) {
