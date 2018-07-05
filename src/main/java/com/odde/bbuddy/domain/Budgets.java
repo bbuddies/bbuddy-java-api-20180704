@@ -31,25 +31,25 @@ public class Budgets {
         Double amount = 0d;
 
         for (Budget budget : allBudget) {
-            if (isBetweenDate(start, end, budget.getMonth())) {
+            if (isDateBetweenSearch(start, end, budget.getMonth())) {
                 amount += calculateAmount(start, end, budget);
             }
         }
         return amount;
     }
 
-    public Double calculateAmount(LocalDate start, LocalDate end, Budget budget) {
+    public Double calculateAmount(LocalDate startSearch, LocalDate endSearch, Budget budget) {
         LocalDate budgetDate = budget.getMonth();
-        if (!(matchMonth(start, budgetDate) || matchMonth(end, budgetDate))) {
+        if (!(matchMonth(startSearch, budgetDate) || matchMonth(endSearch, budgetDate))) {
             return budget.getAmount();
-        } else if (matchMonth(start, budgetDate)) {
-            if (matchMonth(end, budgetDate)) {
-                return budget.getAmount() * (end.getDayOfMonth() - start.getDayOfMonth() + 1) / start.lengthOfMonth();
+        } else if (matchMonth(startSearch, budgetDate)) {
+            if (matchMonth(endSearch, budgetDate)) {
+                return budget.getAmount() * (endSearch.getDayOfMonth() - startSearch.getDayOfMonth() + 1) / startSearch.lengthOfMonth();
             } else {
-                return budget.getAmount() * (start.lengthOfMonth() - start.getDayOfMonth() + 1) / start.lengthOfMonth();
+                return budget.getAmount() * (startSearch.lengthOfMonth() - startSearch.getDayOfMonth() + 1) / startSearch.lengthOfMonth();
             }
         } else {
-            return budget.getAmount() * (end.getDayOfMonth()) / end.lengthOfMonth();
+            return budget.getAmount() * (endSearch.getDayOfMonth()) / endSearch.lengthOfMonth();
         }
     }
 
@@ -57,16 +57,11 @@ public class Budgets {
         return date.getMonth() == checkDate.getMonth() && date.getYear() == checkDate.getYear();
     }
 
-    public boolean isBetweenDate(LocalDate start, LocalDate end, LocalDate budgetMonth) {
+    public boolean isDateBetweenSearch(LocalDate startSearch, LocalDate endSearch, LocalDate budgetMonth) {
         LocalDate startBudget = budgetMonth.withDayOfMonth(1);
         LocalDate endBudget = budgetMonth.withDayOfMonth(budgetMonth.lengthOfMonth());
 
-        return (containDate(startBudget, endBudget, start) || containDate(startBudget, endBudget, end)) ||
-                (containDate(start, end, startBudget) || containDate(start, end, startBudget));
-    }
-
-    private boolean containDate(LocalDate startDate, LocalDate endDate, LocalDate testDate) {
-        return !(testDate.isBefore(startDate)) && !(testDate.isAfter(endDate));
+        return !(endBudget.isBefore(startSearch) || startBudget.isAfter(endSearch)) && startSearch.isBefore(endSearch);
     }
 
 }

@@ -10,10 +10,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,18 +90,13 @@ public class BudgetsTest {
                     "2018-07-01, 2018-07-31, 2018-08-01, false",
                     "2018-07-01, 2018-08-31, 2018-06-01, false"
             })
-    public void test_is_between_date(String startSearch, String endSearch, String budgetDate, Boolean expectingResult) {
+    public void test_is_date_between_search(String startSearch, String endSearch, String budgetDate, Boolean expectingResult) {
         LocalDate start = LocalDate.parse(startSearch);
         LocalDate end = LocalDate.parse(endSearch);
         LocalDate target = LocalDate.parse(budgetDate);
 
-        boolean isBetween = budgets.isBetweenDate(start, end, target);
+        boolean isBetween = budgets.isDateBetweenSearch(start, end, target);
         assertThat(isBetween).isEqualTo(expectingResult);
-    }
-
-    @Test
-    public void testAbc() {
-        System.out.println(LocalDate.of(2018, 7, 1).isBefore(LocalDate.of(2018, 7, 1)));
     }
 
     @Test
