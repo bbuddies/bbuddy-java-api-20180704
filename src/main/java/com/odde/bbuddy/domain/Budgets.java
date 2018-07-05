@@ -30,9 +30,9 @@ public class Budgets {
         List<Budget> allBudget = budgetRepository.findAll();
         Double amount = 0d;
 
-        for (Budget budget: allBudget){
+        for (Budget budget : allBudget) {
             if (isBetweenDate(start, end, budget.getMonth())) {
-                amount += calculateAmount(start,end, budget);
+                amount += calculateAmount(start, end, budget);
             }
         }
         return amount;
@@ -40,12 +40,10 @@ public class Budgets {
 
     public Double calculateAmount(LocalDate start, LocalDate end, Budget budget) {
         LocalDate budgetDate = budget.getMonth();
-        if (!(start.getMonth() == budgetDate.getMonth() ||
-                end.getMonth() == budgetDate.getMonth())
-                ) {
+        if (!(matchMonth(start, budgetDate) || matchMonth(end, budgetDate))) {
             return budget.getAmount();
-        } else if (start.getMonth() == budgetDate.getMonth()) {
-            if (end.getMonth() == budgetDate.getMonth()) {
+        } else if (matchMonth(start, budgetDate)) {
+            if (matchMonth(end, budgetDate)) {
                 return budget.getAmount() * (end.getDayOfMonth() - start.getDayOfMonth() + 1) / start.lengthOfMonth();
             } else {
                 return budget.getAmount() * (start.lengthOfMonth() - start.getDayOfMonth() + 1) / start.lengthOfMonth();
@@ -55,12 +53,20 @@ public class Budgets {
         }
     }
 
+    private boolean matchMonth(LocalDate date, LocalDate checkDate) {
+        return date.getMonth() == checkDate.getMonth() && date.getYear() == checkDate.getYear();
+    }
+
     public boolean isBetweenDate(LocalDate start, LocalDate end, LocalDate budgetMonth) {
         LocalDate startBudget = budgetMonth.withDayOfMonth(1);
         LocalDate endBudget = budgetMonth.withDayOfMonth(budgetMonth.lengthOfMonth());
 
-        return (!(start.isBefore(startBudget)) && !(start.isAfter(endBudget))) ||
-                (!(end.isBefore(startBudget)) && !(end.isAfter(endBudget)));
+        return (containDate(startBudget, endBudget, start) || containDate(startBudget, endBudget, end)) ||
+                (containDate(start, end, startBudget) || containDate(start, end, startBudget));
+    }
+
+    private boolean containDate(LocalDate startDate, LocalDate endDate, LocalDate testDate) {
+        return !(testDate.isBefore(startDate)) && !(testDate.isAfter(endDate));
     }
 
 }
