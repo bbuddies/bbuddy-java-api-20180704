@@ -32,7 +32,8 @@ dependencies {
             'org.projectlombok:lombok:1.16.22',
             'mysql:mysql-connector-java:5.1.46',
             'io.jsonwebtoken:jjwt:0.9.0',
-            'javax.xml.bind:jaxb-api:2.3.0'
+            'javax.xml.bind:jaxb-api:2.3.0',
+            'io.reactivex.rxjava2:rxjava'
     )
     runtime("org.springframework.boot:spring-boot-devtools:${springBootVersion}")
     testCompile(

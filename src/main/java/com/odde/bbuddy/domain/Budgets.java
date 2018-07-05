@@ -2,6 +2,8 @@ package com.odde.bbuddy.domain;
 
 import com.odde.bbuddy.repository.Budget;
 import com.odde.bbuddy.repository.BudgetRepository;
+import io.reactivex.Observable;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -62,6 +64,30 @@ public class Budgets {
         LocalDate endBudget = budgetMonth.withDayOfMonth(budgetMonth.lengthOfMonth());
 
         return !(endBudget.isBefore(startSearch) || startBudget.isAfter(endSearch)) && startSearch.isBefore(endSearch);
+    }
+
+    public double searchBudgetMR(String startDate, String endDate) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+
+        return Observable.fromIterable(budgetRepository.findAll())
+                .flatMap(this::mapBudgetPerMonthToBudgetPerDay)
+                .filter(pair -> !(pair.getFirst().isBefore(start)) && !(pair.getFirst().isAfter(end)))
+                .map(Pair::getSecond)
+                .reduce(0d, (v1, v2) -> v1 + v2)
+                .blockingGet();
+    }
+
+    private Observable<Pair<LocalDate, Double>> mapBudgetPerMonthToBudgetPerDay(Budget budget) {
+        return Observable.create(emitter -> {
+            int dayInMonth = budget.getMonth().lengthOfMonth();
+            double amountPerDay = budget.getAmount() / dayInMonth;
+            for (int i = 1; i <= dayInMonth; i++) {
+                Pair<LocalDate, Double> budgetPerDay = Pair.of(budget.getMonth().withDayOfMonth(i), amountPerDay);
+                emitter.onNext(budgetPerDay);
+            }
+            emitter.onComplete();
+        });
     }
 
 }
