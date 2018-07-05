@@ -1,7 +1,9 @@
 package com.odde.bbuddy.repository;
 
 import com.odde.bbuddy.validator.Unique;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
@@ -10,15 +12,11 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Budget {
-    public Budget(String month, Integer amount) {
-        this.month = month;
-        this.amount = amount;
-    }
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
+    @Id
     private String month;
     private Integer amount;
 }

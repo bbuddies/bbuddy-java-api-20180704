@@ -20,10 +20,16 @@ public class Budgets {
     }
 
     public Budget add(Budget budget) {
+        Budget b = budgetRepository.findByMonth(budget.getMonth());
+        if (b != null) {
+            budgetRepository.delete(b);
+        }
         return budgetRepository.save(budget);
     }
 
     public List<Budget> all() {
         return budgetRepository.findAll();
     }
+
+
 }
