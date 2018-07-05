@@ -8,7 +8,4 @@ import javax.transaction.Transactional;
 
 @Transactional
 public interface BudgetRepository extends JpaRepository<Budget, String> {
-    Budget findByMonth(String month);
-//    @Query("SELECT CASE WHEN COUNT(budget) > 0 THEN 'true' ELSE 'false' END from Budget budget where budget.month = ?1")
-//    boolean existsByMonth(String month);
 }

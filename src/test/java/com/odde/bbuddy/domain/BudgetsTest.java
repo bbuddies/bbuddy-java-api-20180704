@@ -4,6 +4,7 @@ import com.odde.bbuddy.repository.Account;
 import com.odde.bbuddy.repository.AccountRepository;
 import com.odde.bbuddy.repository.Budget;
 import com.odde.bbuddy.repository.BudgetRepository;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -31,21 +32,6 @@ class BudgetsTest {
         verify(repository).save(budget);
     }
 
-    @Test
-    void add_existing_budget() {
-        Budget old = new Budget("09/2017", 10000);
-        when(repository.findByMonth("09/2017")).thenReturn(old);
-
-        givenBudgets( old );
-        Budget budget = new Budget("09/2017", 5000);
-
-        budgets.add(budget);
-
-        verify(repository).findByMonth(old.getMonth());
-        verify(repository).delete(old);
-        verify(repository).save(budget);
-
-    }
     @Test
     void get_all_accounts() {
         givenBudgets(new Budget("09/2018", 10000));
