@@ -14,10 +14,9 @@ import java.util.Locale;
 
 public class Budgets {
     ArrayList<Budget> budgets = new ArrayList<Budget>();
-    public Budgets(){
+    public Budgets(ArrayList<Budget> budgets){
 
-        budgets.add(new Budget("2018-07", 3100));
-        budgets.add(new Budget("2018-09", 3000));
+        this.budgets = budgets;
         for (Budget object: budgets) {
             System.out.println("Add : " + object.month + " " + object.amount );
         }
@@ -25,9 +24,14 @@ public class Budgets {
     }
     public int queryByDate (String start, String end){
         System.out.println("Query from " + start + " to " + end);
+
+        if(!this.validateParameter(start,end)) return -1;
+
         Date startDate = converToDate(start);
         Date endDate = converToDate(end);
+
         int total = 0;
+
         Calendar cEnd = getCalendar(endDate);
         endDate = addDate(cEnd);
         while (!startDate.equals(endDate)){
@@ -45,7 +49,10 @@ public class Budgets {
         return total;
     }
 
-    @NotNull
+    private boolean validateParameter(String start, String end) {
+        if(start.length() != 10 && end.length() != 10) return true;
+        return false;
+    }
     private Date addDate(Calendar cEnd) {
         Date endDate;
         cEnd.add(Calendar.DATE, 1);
@@ -53,7 +60,6 @@ public class Budgets {
         return endDate;
     }
 
-    @NotNull
     private Calendar getCalendar(Date startDate) {
         Calendar c = Calendar.getInstance();
         c.setTime(startDate);

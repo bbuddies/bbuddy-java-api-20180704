@@ -9,11 +9,11 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
-@Entity
-@Data
-@Table(
-        uniqueConstraints = @UniqueConstraint(columnNames = {"month"})
-)
+//@Entity
+//@Data
+//@Table(
+//        uniqueConstraints = @UniqueConstraint(columnNames = {"month"})
+//)
 public class Budget {
 
     public Budget(String mount, int amount){
